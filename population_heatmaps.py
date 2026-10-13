@@ -2,16 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 
-from model import model, N
+from model import model, initial_state
 
 gamma_values = np.logspace(-6, 0, 20)
-days = np.arange(10, 151, 10)
+days = np.arange(20, 301, 20)
 window = 5
 
-
 def outcome_grid(proportions, order):
-    """Cumulative hosp, deaths, infections on a (day x gamma) grid."""
-    y0 = [N * p for p in proportions] + [1e3, 1e3, 0, 0, 0, 2e3, 0, 0, 0]
+    y0 = initial_state(proportions)
     hosp = np.zeros((len(days), len(gamma_values)))
     deaths = np.zeros((len(days), len(gamma_values)))
     inf = np.zeros((len(days), len(gamma_values)))
@@ -33,11 +31,10 @@ def outcome_grid(proportions, order):
             hosp[di, gi], deaths[di, gi], inf[di, gi] = row[12], row[10], row[9]
     return hosp, deaths, inf
 
-
 def plot_ratios(order, name, fname):
     even = outcome_grid([0.25, 0.25, 0.25, 0.25], order)
-    high = outcome_grid([0.125, 0.375, 0.125, 0.375], order)   # 75% high-risk
-    low = outcome_grid([0.375, 0.125, 0.375, 0.125], order)    # 25% high-risk
+    high = outcome_grid([0.125, 0.375, 0.125, 0.375], order)
+    low = outcome_grid([0.375, 0.125, 0.375, 0.125], order)
     eps = 1e-10
 
     fig, axes = plt.subplots(2, 3, figsize=(7.2, 4.8))
@@ -62,7 +59,6 @@ def plot_ratios(order, name, fname):
     plt.savefig(fname, format='pdf', bbox_inches='tight')
     plt.show()
     print(f'done: {name}')
-
 
 plot_ratios((3, 2, 1, 0), 'best',  'ratio best.pdf')
 plot_ratios((0, 1, 2, 3), 'worst', 'ratio worst.pdf')

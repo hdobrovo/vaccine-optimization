@@ -1,4 +1,3 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
@@ -10,7 +9,7 @@ dt = t[1] - t[0]
 y0 = initial_state()
 
 gammas_scan = np.logspace(-6, 0, 100)
-labels = ['su', 'shi', 'shl', 'shh']   # Sll, Slh, Shl, Shh -> figure filenames
+labels = ['su', 'shi', 'shl', 'shh']
 
 results = []
 for i in range(4):

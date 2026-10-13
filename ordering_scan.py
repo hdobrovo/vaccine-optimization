@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from model import initial_state, run_ordering
 
-window, final_day = 20, 150
+window, final_day = 30, 350
 gamma_values = np.logspace(-4, -1, 20)
 groups = ['Sll', 'Slh', 'Shl', 'Shh']
 y0 = initial_state()
